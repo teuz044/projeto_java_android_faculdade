@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/buttonBackToViewCars"
+        android:id="@+id/buttonBackToViewTasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voltar"
@@ -17,49 +17,37 @@
         android:layout_marginTop="16dp"/>
 
     <EditText
-        android:id="@+id/editTextCarName"
+        android:id="@+id/editTextTaskDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Nome do Carro"
+        android:hint="Descrição da Tarefa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonBackToViewCars"
+        app:layout_constraintTop_toBottomOf="@id/buttonBackToViewTasks"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>
 
     <EditText
-        android:id="@+id/editTextCarBrand"
+        android:id="@+id/editTextTaskPriority"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Marca"
+        android:hint="Prioridade"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextCarName"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <EditText
-        android:id="@+id/editTextCarPlate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Placa"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextCarBrand"
+        app:layout_constraintTop_toBottomOf="@id/editTextTaskDescription"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>
 
     <Button
-        android:id="@+id/buttonAddCar"
+        android:id="@+id/buttonAddTask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Adicionar Veículo"
+        android:text="Adicionar Tarefa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextCarPlate"
+        app:layout_constraintTop_toBottomOf="@id/editTextTaskPriority"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>

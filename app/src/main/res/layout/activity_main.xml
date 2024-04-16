@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".visualizarCarros.MainActivity">
+    tools:context=".visualizarTarefas.MainActivity">
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:text="Carros disponíveis"
+        android:text="Tarefas disponíveis"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
         android:id="@+id/buttonAddCar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Adicionar Carro"
+        android:text="Adicionar Tarefa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

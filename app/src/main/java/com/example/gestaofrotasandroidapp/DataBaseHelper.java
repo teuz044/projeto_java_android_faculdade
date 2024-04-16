@@ -5,23 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "carros.db";
+    private static final String DATABASE_NAME = "tarefas.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Tabela de veículos
-    public static final String TABLE_CARROS = "carros";
+    // Tabela de tarefas
+    public static final String TABLE_TAREFAS = "tarefas";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NOME = "nome";
-    public static final String COLUMN_MARCA = "marca";
-    public static final String COLUMN_PLACA = "placa";
+    public static final String COLUMN_DESCRICAO = "descricao";
+    public static final String COLUMN_PRIORIDADE = "prioridade";
+    public static final String COLUMN_STATUS = "status"; // Novo campo para o status da tarefa
 
-    // Comando SQL para criar a tabela de veículos
-    private static final String CREATE_TABLE_CARROS = "CREATE TABLE " +
-            TABLE_CARROS + "(" +
+    // Comando SQL para criar a tabela de tarefas
+    private static final String CREATE_TABLE_TAREFAS = "CREATE TABLE " +
+            TABLE_TAREFAS + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_NOME + " TEXT, " +
-            COLUMN_MARCA + " TEXT, " +
-            COLUMN_PLACA + " TEXT" +
+            COLUMN_DESCRICAO + " TEXT, " +
+            COLUMN_PRIORIDADE + " INTEGER, " +
+            COLUMN_STATUS + " INTEGER DEFAULT 0" + // Valor padrão para o status é 0 (não realizada)
             ")";
 
     public DataBaseHelper(Context context) {
@@ -30,8 +30,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Criar a tabela de veículos
-        db.execSQL(CREATE_TABLE_CARROS);
+        // Criar a tabela de tarefas
+        db.execSQL(CREATE_TABLE_TAREFAS);
     }
 
     @Override
