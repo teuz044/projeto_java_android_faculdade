@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,19 +41,29 @@ public class TarefaAdapter extends ArrayAdapter<Tarefa> {
         textViewTaskDescription.setText(currentTarefa.getDescricao());
 
         TextView textViewSubtitle = listItem.findViewById(R.id.textViewSubtitle);
-        textViewSubtitle.setText("Prioridade: " + currentTarefa.getPrioridade()); // Exibindo a prioridade como subtítulo
+        textViewSubtitle.setText("Prioridade: " + currentTarefa.getPrioridade());
 
-        ImageView imageViewPriorityIndicator = listItem.findViewById(R.id.imageViewPriorityIndicator);
+        // Definindo a cor do texto com base na prioridade
         int priority = currentTarefa.getPrioridade();
-        if (priority == 3) {
-            imageViewPriorityIndicator.setImageResource(R.drawable.custom_red_circle);
-        } else if (priority == 2) {
-            imageViewPriorityIndicator.setImageResource(R.drawable.custom_orange_circle);
-        } else if (priority == 1) {
-            imageViewPriorityIndicator.setImageResource(R.drawable.custom_green_circle);
+        int colorResId;
+
+        switch (priority) {
+            case 1:
+                colorResId = R.color.green; // Defina a cor verde
+                break;
+            case 2:
+                colorResId = R.color.orange; // Defina a cor laranja
+                break;
+            case 3:
+            default:
+                colorResId = R.color.red; // Defina a cor vermelha
+                break;
         }
+
+        textViewSubtitle.setTextColor(mContext.getResources().getColor(colorResId));
 
         return listItem;
     }
+
 
 }

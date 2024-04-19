@@ -12,7 +12,7 @@
         android:theme="@style/Theme.GestaoFrotasAndroidApp"
         tools:targetApi="31">
         <activity
-            android:name=".visualizarTarefas.MainActivity"
+            android:name=".login.Login_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".adicionarTarefas.adicionarNovaTarefa" />
+        <activity android:name=".visualizarTarefas.MainActivity" />
+        <activity android:name=".cadastro.Cadastro_Activity"/>
     </application>
 
 </manifest>

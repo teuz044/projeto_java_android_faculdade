@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">gestaoFrotasAndroidApp</string>
+    <string-array name="statusOptions">
+        <item>Fazendo</item>
+        <item>Concluído</item>
+    </string-array>
 </resources>

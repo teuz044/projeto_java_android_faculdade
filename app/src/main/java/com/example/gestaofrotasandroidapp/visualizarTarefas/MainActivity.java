@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gestaofrotasandroidapp.DataBaseHelper;
 import com.example.gestaofrotasandroidapp.R;
 import com.example.gestaofrotasandroidapp.adicionarTarefas.adicionarNovaTarefa;
+import com.example.gestaofrotasandroidapp.login.Login_Activity;
 import com.example.gestaofrotasandroidapp.visualizarTarefas.models.Tarefa;
 
 import java.util.ArrayList;
@@ -38,9 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("Gestão de tarefas");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Habilitar o botão de voltar
 
         addButton = findViewById(R.id.buttonAddCar);
         taskListView = findViewById(R.id.listViewCars);
+
+        // Defina as opções para o Spinner (status da tarefa)
+        String[] statusOptions = {"Fazendo", "Concluído"};
 
         taskList = new ArrayList<>();
         adapter = new TarefaAdapter(this, R.layout.lst_item_tarefa, taskList);
@@ -68,18 +76,24 @@ public class MainActivity extends AppCompatActivity {
                 builder.setView(editTaskView);
 
                 EditText editTextDescription = editTaskView.findViewById(R.id.editTextDescription);
-                EditText editTextPriority = editTaskView.findViewById(R.id.editTextPriority);
+                Spinner spinnerPriority = editTaskView.findViewById(R.id.editSpinnerPriority); // Alterado
+
+                // Defina as opções para o Spinner de prioridade
+                String[] priorityOptions = {"1", "2", "3"};
+                ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, priorityOptions);
+                priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerPriority.setAdapter(priorityAdapter);
 
                 editTextDescription.setText(task.getDescricao());
-                editTextPriority.setText(String.valueOf(task.getPrioridade()));
+                spinnerPriority.setSelection(task.getPrioridade() - 1); // Subtraia 1 porque os índices do Spinner começam em 0
 
                 builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String newDescription = editTextDescription.getText().toString().trim();
-                        int newPriority = Integer.parseInt(editTextPriority.getText().toString().trim());
+                        int newPriority = spinnerPriority.getSelectedItemPosition() + 1; // +1 porque os índices do Spinner começam em 0
 
-                        updateTask(task.getId(), newDescription, newPriority);
+                        updateTask(task.getId(), newDescription, newPriority, task.getStatus());
                         loadTasks();
                     }
                 });
@@ -98,9 +112,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Verificar se o item de menu pressionado é o botão de voltar
+        if (item.getItemId() == android.R.id.home) {
+            // Iniciar a atividade de login
+            startActivity(new Intent(MainActivity.this, Login_Activity.class));
+            finish(); // Encerrar a atividade atual
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void loadTasks() {
         taskList.clear();
@@ -128,12 +153,13 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void updateTask(long taskId, String newDescription, int newPriority) {
+    private void updateTask(long taskId, String newDescription, int newPriority, int newStatus) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(DataBaseHelper.COLUMN_DESCRICAO, newDescription);
         values.put(DataBaseHelper.COLUMN_PRIORIDADE, newPriority);
+        values.put(DataBaseHelper.COLUMN_STATUS, newStatus);
 
         db.update(DataBaseHelper.TABLE_TAREFAS, values, DataBaseHelper.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(taskId)});

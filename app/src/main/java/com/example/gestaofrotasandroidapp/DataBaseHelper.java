@@ -15,6 +15,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PRIORIDADE = "prioridade";
     public static final String COLUMN_STATUS = "status"; // Novo campo para o status da tarefa
 
+    public static final String TABLE_USUARIOS = "usuarios";
+    public static final String COLUMN_USUARIO = "usuario";
+    public static final String COLUMN_NOME = "nome";
+    public static final String COLUMN_SENHA = "senha";
+
     // Comando SQL para criar a tabela de tarefas
     private static final String CREATE_TABLE_TAREFAS = "CREATE TABLE " +
             TABLE_TAREFAS + "(" +
@@ -22,6 +27,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             COLUMN_DESCRICAO + " TEXT, " +
             COLUMN_PRIORIDADE + " INTEGER, " +
             COLUMN_STATUS + " INTEGER DEFAULT 0" + // Valor padrão para o status é 0 (não realizada)
+            ")";
+
+    // Comando SQL para criar a tabela de usuários
+    private static final String CREATE_TABLE_USUARIOS = "CREATE TABLE " +
+            TABLE_USUARIOS + "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_USUARIO + " TEXT, " +
+            COLUMN_NOME + " TEXT, " +
+            COLUMN_SENHA + " TEXT" +
             ")";
 
     public DataBaseHelper(Context context) {
@@ -32,6 +46,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Criar a tabela de tarefas
         db.execSQL(CREATE_TABLE_TAREFAS);
+        // Criar a tabela de usuários
+        db.execSQL(CREATE_TABLE_USUARIOS);
     }
 
     @Override
