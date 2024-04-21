@@ -23,6 +23,7 @@
         <activity android:name=".adicionarTarefas.adicionarNovaTarefa" />
         <activity android:name=".visualizarTarefas.MainActivity" />
         <activity android:name=".cadastro.Cadastro_Activity"/>
+        <activity android:name=".tarefasRealizadas.Tarefas_Realizadas_Activity"/>
     </application>
 
 </manifest>

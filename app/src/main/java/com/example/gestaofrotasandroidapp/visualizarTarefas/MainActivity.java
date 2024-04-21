@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +26,7 @@ import com.example.gestaofrotasandroidapp.DataBaseHelper;
 import com.example.gestaofrotasandroidapp.R;
 import com.example.gestaofrotasandroidapp.adicionarTarefas.adicionarNovaTarefa;
 import com.example.gestaofrotasandroidapp.login.Login_Activity;
+import com.example.gestaofrotasandroidapp.tarefasRealizadas.Tarefas_Realizadas_Activity;
 import com.example.gestaofrotasandroidapp.visualizarTarefas.models.Tarefa;
 
 import java.util.ArrayList;
@@ -42,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("Gestão de tarefas");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Habilitar o botão de voltar
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Habilitar o botão de voltar
 
         addButton = findViewById(R.id.buttonAddCar);
         taskListView = findViewById(R.id.listViewCars);
 
         // Defina as opções para o Spinner (status da tarefa)
+
         String[] statusOptions = {"Fazendo", "Concluído"};
 
         taskList = new ArrayList<>();
@@ -77,12 +81,23 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText editTextDescription = editTaskView.findViewById(R.id.editTextDescription);
                 Spinner spinnerPriority = editTaskView.findViewById(R.id.editSpinnerPriority); // Alterado
+                Spinner spinnerStatus = editTaskView.findViewById(R.id.editSpinnerStatus); // Adicionado
 
                 // Defina as opções para o Spinner de prioridade
+
                 String[] priorityOptions = {"1", "2", "3"};
                 ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, priorityOptions);
                 priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerPriority.setAdapter(priorityAdapter);
+
+                // Defina as opções para o Spinner de status
+                ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.status_options, android.R.layout.simple_spinner_item);
+                statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerStatus.setAdapter(statusAdapter);
+                if (task.getStatus() == 0 || task.getStatus() == 1) {
+                    spinnerStatus.setSelection(task.getStatus()); // Defina a seleção com base no status da tarefa
+                }
 
                 editTextDescription.setText(task.getDescricao());
                 spinnerPriority.setSelection(task.getPrioridade() - 1); // Subtraia 1 porque os índices do Spinner começam em 0
@@ -92,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String newDescription = editTextDescription.getText().toString().trim();
                         int newPriority = spinnerPriority.getSelectedItemPosition() + 1; // +1 porque os índices do Spinner começam em 0
+                        int newStatus = spinnerStatus.getSelectedItemPosition(); // Obter o status selecionado
 
-                        updateTask(task.getId(), newDescription, newPriority, task.getStatus());
+                        updateTask(task.getId(), newDescription, newPriority, newStatus);
                         loadTasks();
                     }
                 });
@@ -116,16 +132,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Verificar se o item de menu pressionado é o botão de voltar
-        if (item.getItemId() == android.R.id.home) {
-            // Iniciar a atividade de login
-            startActivity(new Intent(MainActivity.this, Login_Activity.class));
-            finish(); // Encerrar a atividade atual
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_tarefas_realizadas) {
+            // Adicione aqui o código para lidar com a opção "Tarefas Realizadas"
+            startActivity(new Intent(MainActivity.this, Tarefas_Realizadas_Activity.class));
+            return true;
+        } else if (id == R.id.menu_sair) {
+              startActivity(new Intent(MainActivity.this, Login_Activity.class));
+              finish(); // Encerrar a atividade atual
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Verificar se o item de menu pressionado é o botão de voltar
+//        if (item.getItemId() == android.R.id.home) {
+//            // Iniciar a atividade de login
+//            startActivity(new Intent(MainActivity.this, Login_Activity.class));
+//            finish(); // Encerrar a atividade atual
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void loadTasks() {
         taskList.clear();
@@ -133,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DataBaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBaseHelper.TABLE_TAREFAS, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBaseHelper.TABLE_TAREFAS +
+                " WHERE " + DataBaseHelper.COLUMN_STATUS + " = 0", null);
+
 
         if (cursor.moveToFirst()) {
             do {

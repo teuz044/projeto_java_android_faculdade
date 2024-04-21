@@ -69,7 +69,7 @@ public class adicionarNovaTarefa extends AppCompatActivity {
                 int taskStatus = Integer.parseInt(spinnerStatus.getSelectedItem().toString());
 
                 // Inserir os valores na tabela de tarefas
-                if (insertTask(taskDescription, taskPriority, taskStatus)) {
+                if (insertTask(taskDescription, taskPriority, 0)) {
                     // Notificar o usuário sobre o sucesso da operação
                     Toast.makeText(adicionarNovaTarefa.this, "Tarefa adicionada com sucesso", Toast.LENGTH_SHORT).show();
 

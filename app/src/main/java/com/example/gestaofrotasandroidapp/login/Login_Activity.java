@@ -28,7 +28,7 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
 
         dbHelper = new DataBaseHelper(this);
-
+        getSupportActionBar().setTitle("Bem vindo!");
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         Button buttonLogin = findViewById(R.id.buttonLogin);
